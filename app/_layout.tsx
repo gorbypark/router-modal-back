@@ -1,37 +1,32 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { Stack } from "expo-router";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+// This will cause index to load under [jornadas_id]/index if it is directly linked to
+// aka this will make sure there's always a "back" to go to even when technically there's
+// not anything to go back to.  It does weird things with the url but works...could also
+// use a "back href" prop to manually set the "close" behaviour.
+export const unstable_settings = {
+  initialRouteName: "index",
+};
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+    <Stack>
+      <Stack.Screen
+        name="thing/[thing_id]/index"
+        options={{
+          presentation: "transparentModal",
+          animation: "fade",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="other/[other_id]/[name]"
+        options={{
+          presentation: "transparentModal",
+          animation: "fade",
+          headerShown: false,
+        }}
+      />
+    </Stack>
   );
 }
