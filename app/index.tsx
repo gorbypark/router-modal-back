@@ -1,10 +1,12 @@
 import { Text, View } from "react-native";
 import { Link } from "expo-router";
 import { useLocalSearchParams, useGlobalSearchParams } from "expo-router";
+import { useNavigationState } from "@react-navigation/native";
 
 export default function Index() {
   const localParams = useLocalSearchParams();
   const globalParams = useGlobalSearchParams();
+  const navigationState = useNavigationState((state) => state);
 
   return (
     <View
@@ -38,6 +40,7 @@ export default function Index() {
 
       <Text>LOCAL PARAMS: {JSON.stringify(localParams)}</Text>
       <Text>GLOBAL PARAMS: {JSON.stringify(globalParams)}</Text>
+      <Text>{JSON.stringify(navigationState, null, 2)}</Text>
     </View>
   );
 }
